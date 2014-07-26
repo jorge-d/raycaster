@@ -59,15 +59,19 @@ Map.prototype.draw = function(canvas, camera) {
     for (var y = 0; y < this.height; y+=this.blockSize) {
       if (this.get(x, y)) {
         // wall
+        context.globalAlpha = 0.2
         context.fillStyle = "#000"
       } else {
+        context.globalAlpha = 1
         context.fillStyle = "#fff"
       }
       context.fillRect(x * scale, y * scale, blockSize, blockSize)
     }
   }
 
-  // Draw FOV
+ context.globalAlpha = 1
+
+ // Draw FOV
   var angle = camera.fov / 2
   context.beginPath()
   context.moveTo(camera.x * scale, camera.y * scale)
