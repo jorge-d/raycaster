@@ -26,7 +26,13 @@ Game.keys = {
   37: 'left',
   38: 'up',
   39: 'right',
-  40: 'down'
+  40: 'down',
+  65: 'a',
+  68: 'd',
+  69: 'e',
+  81: 'q',
+  83: 's',
+  87: 'w',
 }
 
 // Setup the game loop.

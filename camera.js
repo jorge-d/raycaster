@@ -1,7 +1,9 @@
-function Camera() {
+function Camera(map) {
   // Initial camera position
   this.x = 0
   this.y = 500
+
+  this.map = map
 
   // Camera angle
   this.angle = 0
@@ -60,6 +62,26 @@ Camera.prototype.castRay = function(angle, map) {
 }
 
 Camera.prototype.move = function(distance) {
-  this.x += Math.cos(this.angle * DEG) * distance
-  this.y += Math.sin(this.angle * DEG) * distance
+  x = this.x + Math.cos(this.angle * DEG) * distance
+  y = this.y + Math.sin(this.angle * DEG) * distance
+
+  if (this.map.get(Math.ceil(x), Math.ceil(y)) != 1) {
+    this.x = Math.floor(x)
+    this.y = Math.floor(y)
+  }
+}
+
+Camera.prototype.strafe = function(distance) {
+  if (this.angle >= 0)
+    strafe_angle = 90 - this.angle
+  else
+    strafe_angle = this.angle + 90
+
+  x = this.x + Math.cos(strafe_angle * DEG) * distance
+  y = this.y + Math.sin(strafe_angle * DEG) * distance
+
+  if (this.map.get(Math.ceil(x), Math.ceil(y)) != 1) {
+    this.x = Math.floor(x)
+    this.y = Math.floor(y)
+  }
 }

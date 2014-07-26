@@ -7,17 +7,27 @@ var game = new Game(canvas)
 
 var context = canvas.getContext("2d")
 
+var STRAFE_DISTANCE = 10,
+    MOVEMENT_DISTANCE = 10,
+    ANGLE_MOVEMENT = 1
+
 game.onFrame(function() {
-  if (game.keyPressed.up) {
-    camera.move(10)
-  } else if (game.keyPressed.down) {
-    camera.move(-10)
+  if (game.keyPressed.up || game.keyPressed.w) {
+    camera.move(MOVEMENT_DISTANCE)
+  } else if (game.keyPressed.down || game.keyPressed.s) {
+    camera.move(-MOVEMENT_DISTANCE)
   }
 
-  if (game.keyPressed.left) {
-    camera.angle -= 1
-  } else if (game.keyPressed.right) {
-    camera.angle += 1
+  if (game.keyPressed.a) {
+    camera.strafe(-STRAFE_DISTANCE);
+  } else if (game.keyPressed.d) {
+    camera.strafe(STRAFE_DISTANCE);
+  }
+
+  if (game.keyPressed.left  || game.keyPressed.q ) {
+    camera.angle -= ANGLE_MOVEMENT
+  } else if (game.keyPressed.right  || game.keyPressed.e ) {
+    camera.angle += ANGLE_MOVEMENT
   }
 
   context.fillStyle = '#fff'
