@@ -45,21 +45,74 @@ Camera.prototype.project = function(map, canvas) {
   }
 }
 
-Camera.prototype.castRay = function(angle, map) {
-  var x = this.x
-  var y = this.y
+function distance(xa, xb, ya, yb) {
+  return Math.sqrt(Math.pow(xb - xa, 2) + Math.pow(yb - ya, 2))
+}
 
-  var xIncrement = Math.cos(angle * DEG)
-  var yIncrement = Math.sin(angle * DEG)
+Camera.prototype.horizontalIntersection = function(alpha, map) {
+  var Ya, Xa, point = {x: 0, y: 0}
 
-  for (var length = 0; length < this.maxDistance; length++) {
-    x += xIncrement
-    y += yIncrement
-
-    var hit = map.get(x, y)
-
-    if (hit) return length
+  if (alpha > 180) { // facing up
+    Ya = -map.blockSize
+    point.y = Math.floor(this.x / map.blockSize) * (map.blockSize) - 1
   }
+  else { // facing down
+    Ya = map.blockSize
+    point.y = Math.floor(this.y / map.blockSize) * (map.blockSize) + map.blockSize
+  }
+
+  Xa = map.blockSize / Math.tan(alpha * DEG)
+  point.x = this.x + (this.y - point.y) / Math.tan(alpha * DEG)
+
+  while (true) {
+    var hit = map.get(point.x, point.y)
+
+    if (hit) {
+      // console.log(length)
+      return distance(this.x, point.x, this.y, point.y)
+    }
+
+    point.x += Xa
+    point.y += Ya
+  }
+}
+
+Camera.prototype.verticalIntersection = function(alpha, map) {
+  var Ya, Xa, point = {x: 0, y: 0}
+
+  if (alpha > 270 || alpha < 90) { // facing right
+    Xa = map.blockSize
+    point.x = Math.floor(this.x / map.blockSize) * (map.blockSize) + map.blockSize
+  }
+  else { // facing left
+    Xa = -map.blockSize
+    point.x = Math.floor(this.x / map.blockSize) * (map.blockSize) - 1
+  }
+
+  Ya = map.blockSize * Math.tan(alpha * DEG)
+  point.y = this.y + (this.x - point.x) * Math.tan(alpha * DEG)
+
+  while (true) {
+    var hit = map.get(point.x, point.y)
+
+    if (hit) {
+      // console.log(length)
+      return distance(this.x, point.x, this.y, point.y)
+    }
+
+    point.x += Xa
+    point.y += Ya
+  }
+}
+
+Camera.prototype.castRay = function(alpha, map) {
+  // Ensure angle is positive and < 360 to simplify facing up or down checks
+  var alpha = 360 - Math.abs(alpha % 360)
+
+  var hdist = this.horizontalIntersection(alpha, map),
+      vdist = this.verticalIntersection(alpha, map)
+
+  return Math.min(Math.min(hdist, vdist), this.maxDistance)
 }
 
 Camera.prototype.move = function(distance) {

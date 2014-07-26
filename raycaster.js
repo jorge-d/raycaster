@@ -11,7 +11,7 @@ var STRAFE_DISTANCE = 10,
     MOVEMENT_DISTANCE = 10,
     ANGLE_MOVEMENT = 1
 
-game.onFrame(function() {
+fn = function() {
   if (game.keyPressed.up || game.keyPressed.w) {
     camera.move(MOVEMENT_DISTANCE)
   } else if (game.keyPressed.down || game.keyPressed.s) {
@@ -39,4 +39,7 @@ game.onFrame(function() {
 
   // Draw the mini-map
   map.draw(canvas, camera)
-})
+}
+
+// fn()
+game.onFrame(fn)
