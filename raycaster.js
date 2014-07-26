@@ -33,6 +33,8 @@ game.onFrame(function() {
   context.fillStyle = '#fff'
   context.fillRect(0, 0, canvas.width, canvas.height)
 
+  map.drawBackground(canvas)
+
   camera.project(map, canvas)
 
   // Draw the mini-map

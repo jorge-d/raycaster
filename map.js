@@ -36,6 +36,18 @@ Map.prototype.get = function(x, y) {
   return this.grid[x + y * this.width / this.blockSize]
 }
 
+Map.prototype.drawBackground = function(canvas) {
+  var context = canvas.getContext("2d")
+
+  // Draw ceiling
+  context.fillStyle = "#7ec0ee"
+  context.fillRect(0, 0, canvas.width, canvas.height / 2)
+
+  // Draw floor
+  context.fillStyle = "#007B0C"
+  context.fillRect(0, canvas.height / 2, canvas.width, canvas.height / 2)
+}
+
 // Draw a mini map on screen w/ the camera and its field of view.
 Map.prototype.draw = function(canvas, camera) {
   var scale = 0.2

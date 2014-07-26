@@ -32,9 +32,10 @@ Camera.prototype.project = function(map, canvas) {
 
     var y = canvas.height / 2 - sliceHeight / 2
 
-    context.fillStyle = '#f0f'
+    context.fillStyle = '#11AE79'
     context.fillRect(x, y, 1, sliceHeight)
 
+    // apply shade
     context.fillStyle = '#000'
     context.globalAlpha = distance / this.maxDistance
     context.fillRect(x, y, 1, sliceHeight)
